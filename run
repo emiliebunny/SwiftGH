@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+swift run SwiftGH --inipath="$HOME/SwiftGH/Example/config.ini"
+

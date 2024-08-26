@@ -2,17 +2,28 @@
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
+import Foundation
 
 let package = Package(
     name: "SwiftGH",
     platforms: [.macOS(.v10_15), .iOS(.v13), .tvOS(.v13), .watchOS(.v6), .macCatalyst(.v13)],
     dependencies: [
         .package(url: "https://github.com/apple/swift-testing.git", from: "0.11.0"),
+        //.package(url: "https://github.com/swift-server/swift-backtrace.git", exact: "1.3.5"),
+        .package(url: "https://github.com/apple/swift-argument-parser", exact: "1.3.0"),
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .executableTarget(
-            name: "SwiftGH"),
+            name: "SwiftGH", 
+            dependencies: [
+                //.product(name: "Backtrace", package: "swift-backtrace"),
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+            ]
+        ),
     ]
 )
+
+//if let iniPath = ProcessInfo.processInfo.environment["INIPATH"] {
+//    print("INIPATH=\(iniPath)")
+//}
+

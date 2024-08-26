@@ -1,13 +1,15 @@
 import Foundation
 
-func readINI() throws -> [String: String] {
-    // let fileManager = FileManager.default
-    // let path = fileManager.currentDirectoryPath
-    
-    // print(path)
-
+func readINI(path: String = "") throws -> [String: String] {
     var INI: [String: String] = [:]
-    let filename = "swiftgh.ini"
+    var filename = path
+    if filename.isEmpty {
+        let fileManager = FileManager.default
+        let currentPath = fileManager.currentDirectoryPath
+
+        filename = currentPath + "/config.ini"
+    }
+    
     do {
         let contents = try String(contentsOfFile: filename, encoding: .utf8)
         let lines = contents.split(separator:"\n")
