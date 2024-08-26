@@ -11,7 +11,8 @@ struct SwiftGH: ParsableCommand {
     public var inipath: String
 
     public func run() throws {
-        let ini = try! readINI(path: inipath)
+        //let ini = try! readINI(path: inipath)
+        let ini = try! readINI(path: self.inipath)
         print(ini)
     }
 }
