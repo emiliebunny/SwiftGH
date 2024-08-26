@@ -7,6 +7,16 @@ import Foundation
 let package = Package(
     name: "SwiftGH",
     platforms: [.macOS(.v10_15), .iOS(.v13), .tvOS(.v13), .watchOS(.v6), .macCatalyst(.v13)],
+    products: [
+        .executable(
+            name: "SwiftGH",
+            targets: ["SwiftGH"]
+        ),
+        .library(
+            name: "GitCLI",
+            targets: ["GitCLI"]
+        ),
+    ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-testing.git", from: "0.11.0"),
         //.package(url: "https://github.com/swift-server/swift-backtrace.git", exact: "1.3.5"),
@@ -18,7 +28,11 @@ let package = Package(
             dependencies: [
                 //.product(name: "Backtrace", package: "swift-backtrace"),
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .target(name: "GitCLI"),
             ]
+        ),
+        .target(
+            name: "GitCLI"
         ),
     ]
 )
