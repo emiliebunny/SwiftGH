@@ -1,9 +1,5 @@
 import ArgumentParser
-//import Backtrace
-
-//Backtrace.install()
-
-// SpawnRun()
+import GitCLI
 
 @main
 struct SwiftGH: ParsableCommand {
@@ -13,6 +9,8 @@ struct SwiftGH: ParsableCommand {
     public func run() throws {
         //let ini = try! readINI(path: inipath)
         let ini = try! readINI(path: self.inipath)
-        print(ini)
+        let gitCLI = try! GitCLI(ini: ini)
+        let data = gitCLI.getData()
+        print (data)
     }
 }
