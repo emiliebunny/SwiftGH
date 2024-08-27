@@ -20,12 +20,14 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/swift-testing.git", from: "0.11.0"),
         //.package(url: "https://github.com/swift-server/swift-backtrace.git", exact: "1.3.5"),
+        .package(url: "https://github.com/apple/swift-log.git", exact: "1.6.1"),
         .package(url: "https://github.com/apple/swift-argument-parser", exact: "1.3.0"),
     ],
     targets: [
         .executableTarget(
             name: "SwiftGH", 
             dependencies: [
+                .product(name: "Logging", package: "swift-log"),
                 //.product(name: "Backtrace", package: "swift-backtrace"),
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .target(name: "GitCLI"),

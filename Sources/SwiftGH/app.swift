@@ -1,5 +1,8 @@
+import Logging
 import ArgumentParser
 import GitCLI
+
+let logger = Logger(label: "app")
 
 @main
 struct SwiftGH: ParsableCommand {
@@ -11,6 +14,9 @@ struct SwiftGH: ParsableCommand {
         let ini = try! readINI(path: self.inipath)
         let gitCLI = try! GitCLI(ini: ini)
         let data = gitCLI.getData()
-        print (data)
+
+        logger.info("inifile=\(self.inipath)")
+        logger.info("ini=\(ini)")
+        logger.info("data=\(data)")
     }
 }
