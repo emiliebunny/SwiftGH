@@ -1,7 +1,12 @@
+import Logging
 import Foundation
+
+let logger = Logger(label: "GitCLI")
 
 public struct GitCLI {
     let repo: String
+    let repoFile: String
+    let localFolder: String
 
     public init(ini: [String:String]) throws {
         if let iniRepo = ini["REPO"] {
@@ -9,14 +14,25 @@ public struct GitCLI {
         } else {
             throw GitCLIError.InvalidRepository 
         }
+        if let iniRepoFile = ini["REPOFILE"] {
+            repoFile = iniRepoFile
+        } else {
+            throw GitCLIError.InvalidRepository 
+        }
+        if let iniLocalFolder = ini["LOCALFOLDER"] {
+            localFolder = iniLocalFolder
+        } else {
+            throw GitCLIError.InvalidRepository 
+        }
     }
 
     public func getData() -> String {
+        logger.info("getData \(repo) \(repoFile) \(localFolder)")
         return "getData \(repo)"
     }
 
-    func SpawnRun() {
-        print("test SpawnRun")
+    public func Sync() {
+        logger.info("Sync")
         let task = Process()
 
         let outputPipe = Pipe()

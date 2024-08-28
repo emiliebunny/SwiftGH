@@ -34,7 +34,10 @@ let package = Package(
             ]
         ),
         .target(
-            name: "GitCLI"
+            name: "GitCLI",
+            dependencies: [
+                .product(name: "Logging", package: "swift-log"),
+            ]
         ),
     ]
 )

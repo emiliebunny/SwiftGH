@@ -15,7 +15,7 @@ func readINI(path: String = "") throws -> [String: String] {
         let lines = contents.split(separator:"\n")
         for line in lines {
             let li = line.split(separator:"=")
-            if ["REPO", "FILE", "LOCALFOLDER"].contains(li[0]) {
+            if ["REPO", "REPOFILE", "LOCALFOLDER"].contains(li[0]) {
                 let iniValue = String(li[1]) 
                 if !iniValue.isEmpty {
                     if iniValue.first != "\"" && iniValue.last != "\"" {
