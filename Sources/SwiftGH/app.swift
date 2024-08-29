@@ -13,10 +13,9 @@ struct SwiftGH: ParsableCommand {
         //let ini = try! readINI(path: inipath)
         let ini = try! readINI(path: self.inipath)
         let gitCLI = try! GitCLI(ini: ini)
-        let data = gitCLI.getData()
+        gitCLI.sync()
 
         logger.info("inifile=\(self.inipath)")
         logger.info("ini=\(ini)")
-        logger.info("data=\(data)")
     }
 }

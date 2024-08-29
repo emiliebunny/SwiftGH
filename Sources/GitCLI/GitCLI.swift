@@ -24,6 +24,14 @@ public struct GitCLI {
         } else {
             throw GitCLIError.InvalidLocalFolder
         }
+        let fileManager = FileManager.default
+        do {
+            try fileManager.createDirectory(atPath: localFolder, withIntermediateDirectories: true, attributes: nil)
+            logger.info("folder created.")
+        } catch {
+            logger.info("folder found.")
+            throw error
+        }
     }
 
     public func getData() -> String {
@@ -31,10 +39,57 @@ public struct GitCLI {
         return "getData \(repo)"
     }
 
-    public func Sync() {
+    func runTask(executable: String, arguments: [String], completion: @escaping (String?, Error?) -> Void) {
+        let process = Process()
+            process.executableURL = URL(fileURLWithPath: executable)
+            process.arguments = arguments
+
+            let outputPipe = Pipe()
+            process.standardOutput = outputPipe
+
+            do {
+                try process.run()
+            } catch {
+                completion(nil, error)
+                    return
+            }
+
+        process.waitUntilExit()
+
+            let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
+            let output = String(data: outputData, encoding: .utf8)
+            completion(output, nil)
+    }
+
+    func runGitTask(arguments: [String], completion: @escaping (String?, Error?) -> Void) {
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "git")
+        process.arguments = arguments
+
+        let outputPipe = Pipe()
+        process.standardOutput = outputPipe
+
+        do {
+        try process.run()
+        } catch {
+        completion(nil, error)
+        return
+        }
+
+        process.waitUntilExit()
+
+        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
+        let output = String(data: outputData, encoding: .utf8)
+        completion(output, nil)
+    }
+
+    public func sync() {
         logger.info("Sync")
         
         let task = Process()
+        task.currentDirectoryURL = URL(fileURLWithPath: localFolder)
+
+        //print(task.currentDirectoryURL?.path)
 
         let outputPipe = Pipe()
         let errorPipe = Pipe()
@@ -42,12 +97,27 @@ public struct GitCLI {
         task.standardError = errorPipe
 
         task.executableURL = URL(fileURLWithPath: "/usr/bin/git")
-        let filename = "log"
-        task.arguments = [filename]
+        task.arguments = ["init"]
         do {
             try task.run()
         } catch {
-            print("Error \(error) !!")
+            logger.info("Sync error: \(error)")
+        }
+        
+        //task.executableURL = URL(fileURLWithPath: "/usr/bin/git")
+        task.arguments = ["remote", "add", "origin", repo]
+        do {
+            try task.run()
+        } catch {
+            logger.info("Sync error: \(error)")
+        }
+
+        //task.executableURL = URL(fileURLWithPath: "/usr/bin/git")
+        task.arguments = ["fetch", "--all"]
+        do {
+            try task.run()
+        } catch {
+            logger.info("Sync error: \(error)")
         }
 
         let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
