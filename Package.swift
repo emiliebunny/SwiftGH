@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 5.10.1
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -18,7 +18,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-testing.git", from: "0.11.0"),
+        // .package(url: "https://github.com/apple/swift-testing.git", from: "0.11.0"),
         //.package(url: "https://github.com/swift-server/swift-backtrace.git", exact: "1.3.5"),
         .package(url: "https://github.com/apple/swift-log.git", exact: "1.6.1"),
         .package(url: "https://github.com/apple/swift-argument-parser", exact: "1.3.0"),

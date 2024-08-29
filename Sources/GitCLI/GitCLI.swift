@@ -12,17 +12,17 @@ public struct GitCLI {
         if let iniRepo = ini["REPO"] {
             repo = iniRepo
         } else {
-            throw GitCLIError.InvalidRepository 
+            throw GitCLIError.InvalidRepository
         }
         if let iniRepoFile = ini["REPOFILE"] {
             repoFile = iniRepoFile
         } else {
-            throw GitCLIError.InvalidRepository 
+            throw GitCLIError.InvalidRepoFile
         }
         if let iniLocalFolder = ini["LOCALFOLDER"] {
             localFolder = iniLocalFolder
         } else {
-            throw GitCLIError.InvalidRepository 
+            throw GitCLIError.InvalidLocalFolder
         }
     }
 
@@ -33,6 +33,7 @@ public struct GitCLI {
 
     public func Sync() {
         logger.info("Sync")
+        
         let task = Process()
 
         let outputPipe = Pipe()
