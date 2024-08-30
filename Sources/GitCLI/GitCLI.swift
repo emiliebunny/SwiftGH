@@ -58,12 +58,13 @@ public struct GitCLI {
         completion(output, nil)
     }
 
-    func runGitTasks() {
+    func runGitDownloadTasks() {
         let git = "/usr/bin/git"
         let tasks = [
-            (git, ["--version"]),
-            (git, ["Hello, World!"]),
-            (git, [])
+            (git, ["init"]),
+            (git, ["remote", "add", "origin", repo]),
+            (git, ["fetch", "--all"]),
+            (git, ["checkout", "origin/main", "--", repoFile])
         ]
         let dispatchGroup = DispatchGroup()
         for task in tasks {
@@ -80,52 +81,38 @@ public struct GitCLI {
         }
     }
     
-    public func sync() {
-        logger.info("Sync")
-        
+    public func downloadFile() {
+        logger.info("downloadFile")
+        runGitDownloadTasks()
+    }
 
-        let outputPipe = Pipe()
-        let errorPipe = Pipe()
-        task.standardOutput = outputPipe
-        task.standardError = errorPipe
+    public func uploadFile() {
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd hh:mm a"
+        let currDate = formatter.string(from: date)
 
-        task.executableURL = URL(fileURLWithPath: "/usr/bin/git")
-        task.arguments = ["init"]
-        do {
-            try task.run()
-        } catch {
-            logger.info("Sync error: \(error)")
+        logger.info("uploadFile \(currDate)")    
+
+        let git = "/usr/bin/git"
+        let tasks = [
+            (git, ["add", repoFile]),
+            (git, ["commit", "-m", currDate]),
+            (git, ["push", "--set-upstream", "origin", "main", "--force"])
+        ]
+        let dispatchGroup = DispatchGroup()
+        for task in tasks {
+            dispatchGroup.enter()
+            runTask(executable: task.0, arguments: task.1) { output, error in
+                if let error = error {
+                    print("Error: \(error)")
+                } else if let output = output {
+                    print("Output: \(output)")
+                }
+                dispatchGroup.leave()
+            }
+            dispatchGroup.wait()
         }
-        task.waitUntilExit()
-
-        task = Process()
-        task.executableURL = URL(fileURLWithPath: "/usr/bin/git")
-        task.arguments = ["remote", "add", "origin", repo]
-        do {
-            try task.run()
-        } catch {
-            logger.info("Sync error: \(error)")
-        }
-        task.waitUntilExit()
-
-        task = Process()
-        task.executableURL = URL(fileURLWithPath: "/usr/bin/git")
-        task.arguments = ["fetch", "--all"]
-        do {
-            try task.run()
-        } catch {
-            logger.info("Sync error: \(error)")
-        }
-        task.waitUntilExit()
-
-        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-        let errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
-        let output = String(decoding: outputData, as: UTF8.self)        
-        let error = String(decoding: errorData, as: UTF8.self)
-        print(outputData)
-        print(errorData)
-        print(output)
-        print(error)
     }
 
     func syncOLD() {
