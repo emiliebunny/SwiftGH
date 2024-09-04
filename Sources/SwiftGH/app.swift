@@ -1,6 +1,7 @@
 import Logging
 import ArgumentParser
 import GitCLI
+import SwiftTUI
 
 let logger = Logger(label: "app")
 
@@ -15,9 +16,14 @@ struct SwiftGH: ParsableCommand {
         let gitCLI = try! GitCLI(ini: ini)
         //gitCLI.downloadFile()
 
-        gitCLI.uploadFile()
+        //gitCLI.uploadFile()
 
         logger.info("inifile=\(self.inipath)")
         logger.info("ini=\(ini)")
+
+        Application(rootView: ContentView()).start()
+
+
     }
 }
+
