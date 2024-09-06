@@ -12,14 +12,15 @@ struct SwiftGH: ParsableCommand {
 
     public func run() throws {
         //let ini = try! readINI(path: inipath)
-        let ini = try! readINI(path: self.inipath)
-        let gitCLI = try! GitCLI(ini: ini)
+        
+        // let ini = try! readINI(path: self.inipath)
+        // let gitCLI = try! GitCLI(ini: ini)
         //gitCLI.downloadFile()
 
         //gitCLI.uploadFile()
 
         logger.info("inifile=\(self.inipath)")
-        logger.info("ini=\(ini)")
+        // logger.info("ini=\(ini)")
 
         Application(rootView: ContentView()).start()
 

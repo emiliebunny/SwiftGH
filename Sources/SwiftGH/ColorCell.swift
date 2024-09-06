@@ -10,7 +10,7 @@ struct ColorCell: View {
         VStack(alignment: .center) {
             colorState.color
                 .frame(width: 7, height: 3)
-                .padding(.horizontal, 1)
+                // .padding(.horizontal, 1)
                 .border()
                 Text(colorState.name)
                 Text("(\(colorState.fgCode), \(colorState.bgCode))")

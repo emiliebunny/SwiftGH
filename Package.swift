@@ -22,7 +22,8 @@ let package = Package(
         //.package(url: "https://github.com/swift-server/swift-backtrace.git", exact: "1.3.5"),
         .package(url: "https://github.com/apple/swift-log.git", exact: "1.6.1"),
         .package(url: "https://github.com/apple/swift-argument-parser", exact: "1.3.0"),
-        .package(url: "https://github.com/rensbreur/SwiftTUI.git", exact: "0.1.0"),
+        // .package(url: "https://github.com/rensbreur/SwiftTUI.git", from: "0.1.0"),
+        .package(url: "https://github.com/emiliebunny/SwiftTUI.git", exact: "1001.0.1"),
     ],
     targets: [
         .executableTarget(
